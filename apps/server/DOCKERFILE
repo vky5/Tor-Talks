@@ -1,0 +1,17 @@
+# Use a Go base image
+FROM golang:1.22.10 as builder
+
+# Set up the default working directory inside the container
+WORKDIR /app
+
+# Copy the Go source code to the container from current directory to base directory
+COPY . .
+
+# Install dependencies and build the Go app
+RUN go mod tidy
+
+#Building the go app
+RUN go build -o tortalks-backend
+
+# Run the Go binary
+CMD ["./tortalks-backend"]
