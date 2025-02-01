@@ -3,14 +3,18 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import sendResponse from "@/util/sendResponse";
 
+// importing error handling functionality
+import catchAsync from "@/util/error handling/catchAsync";
+import AppError from "@/util/error handling/appError";
+
 // Correct function declaration
-export default async function handler(
+export default catchAsync(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   // ensure the method of request
   if (req.method !== "POST") {
-    return sendResponse(res, 405, "Method not allowed");
+    throw new AppError("Not valid request type", 400);
   }
 
   const { username, email, password, name } = req.body;
@@ -18,7 +22,7 @@ export default async function handler(
   // validate inputs
 
   if (!username || !email || password) {
-    return sendResponse(res, 400, "Username, email and password are required");
+    throw new AppError("Username, email and password is required", 400);
   }
 
   const newUser = await Users.create({
@@ -28,5 +32,7 @@ export default async function handler(
     email: email,
   });
 
-  
-}
+  sendResponse(res, 201, "signup was successful", newUser);
+});
+
+
