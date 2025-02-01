@@ -87,5 +87,12 @@ userSchema.pre(/^find/, function (this: Query<IUser, IUser>, next) {
 });
 
 // defining model and exporting it
-const Users = mongoose.model("Users", userSchema);
+let Users;
+
+try {
+  Users = mongoose.model("Users"); // Try to get the model if it already exists
+} catch (error) {
+  Users = mongoose.model("Users", userSchema); // If not, define it
+  console.log(error);
+}
 export default Users;

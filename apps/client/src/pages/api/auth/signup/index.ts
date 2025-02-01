@@ -6,12 +6,14 @@ import sendResponse from "@/util/sendResponse";
 // importing error handling functionality
 import catchAsync from "@/util/error handling/catchAsync";
 import AppError from "@/util/error handling/appError";
+import dbConnect from "@/lib/dbConnect/dbConnect";
 
 // Correct function declaration
 export default catchAsync(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  await dbConnect();
   // ensure the method of request
   if (req.method !== "POST") {
     throw new AppError("Not valid request type", 400);
@@ -20,8 +22,7 @@ export default catchAsync(async function handler(
   const { username, email, password, name } = req.body;
 
   // validate inputs
-
-  if (!username || !email || password) {
+  if (!username || !email ||!password) {
     throw new AppError("Username, email and password is required", 400);
   }
 
@@ -34,5 +35,3 @@ export default catchAsync(async function handler(
 
   sendResponse(res, 201, "signup was successful", newUser);
 });
-
-
