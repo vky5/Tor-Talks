@@ -1,15 +1,20 @@
 import { Document } from "mongoose";
 
-// Define the User document type
-interface IUser extends Document {
+interface IUserModel extends Document {
   name?: string;
   username: string;
   email: string;
   password: string;
-  active: boolean;
   passwordChangedAt?: Date;
+  active: boolean;
   passwordResetToken?: string;
-  PasswordResetExpires?: Date;
+  passwordResetExpires?: Date;
+
+  correctPassword(
+    candidatePassword: string,
+    hashedPasswordInDB: string
+  ): Promise<boolean>;
+  createPasswordResetToken(): string;
 }
 
-export default IUser;
+export default IUserModel;

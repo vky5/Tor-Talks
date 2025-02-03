@@ -1,12 +1,13 @@
 import Users from "@/models/UserModel";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import sendResponse from "@/util/sendResponse";
-
 // importing error handling functionality
 import catchAsync from "@/util/error handling/catchAsync";
 import AppError from "@/util/error handling/appError";
+import createAndSendJWT from "@/util/auth/sendJWTToken";
+
 import dbConnect from "@/lib/dbConnect/dbConnect";
+import { Types } from "mongoose";
 
 // Correct function declaration
 export default catchAsync(async function handler(
@@ -22,7 +23,7 @@ export default catchAsync(async function handler(
   const { username, email, password, name } = req.body;
 
   // validate inputs
-  if (!username || !email ||!password) {
+  if (!username || !email || !password) {
     throw new AppError("Username, email and password is required", 400);
   }
 
@@ -32,6 +33,10 @@ export default catchAsync(async function handler(
     password: password,
     email: email,
   });
+   
+  // Explicitly cast the _id to ObjectId
 
-  sendResponse(res, 201, "signup was successful", newUser);
+   const userId: Types.ObjectId = newUser._id as Types.ObjectId;
+
+  createAndSendJWT(userId, req, res, 201, "Signup");
 });
