@@ -1,10 +1,11 @@
+
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 
-import TextCarousel from "./TextCarousel";
+import SignUpForm from "./SignupComponent"; // Import the SignUpForm component
 
 interface SlidingPanelProps {
   onClose: () => void;
@@ -12,12 +13,11 @@ interface SlidingPanelProps {
 
 export default function SlidingPanel({ onClose }: SlidingPanelProps) {
   const [isVisible, setIsVisible] = useState(true);
+  const [showSignUpForm, setShowSignUpForm] = useState(false); // State to toggle form visibility
 
   const handleClose = () => {
-    // Start closing animation
     setIsVisible(false);
-    // Delay calling onClose after the closing animation completes
-    setTimeout(() => onClose(), 300); // Ensure onClose is called after animation
+    setTimeout(() => onClose(), 300);
   };
 
   return (
@@ -28,10 +28,9 @@ export default function SlidingPanel({ onClose }: SlidingPanelProps) {
           initial={{ y: "100%" }}
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
-          transition={{ duration: 0.3, ease: "easeOut" }} // Faster closing animation
+          transition={{ duration: 0.3, ease: "easeOut" }}
           key="sliding-panel"
         >
-          {/* Close Icon */}
           <button
             onClick={handleClose}
             className="absolute top-4 right-4 text-white text-2xl hover:text-[#FE3EAA] transition-colors"
@@ -42,15 +41,26 @@ export default function SlidingPanel({ onClose }: SlidingPanelProps) {
 
           <h1 className="text-4xl font-bold mb-4">Welcome to Pigeon</h1>
 
-          <TextCarousel />
-          <div className="flex justify-center">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              className="px-6 py-3 text-lg font-semibold text-white bg-[#FE3EAA] rounded-2xl shadow-lg hover:bg-[#6C19FF] transition-all duration-300"
-            >
-              Login
-            </motion.button>
-          </div>
+          {showSignUpForm ? ( // Conditionally render the form or other content
+            <SignUpForm />
+          ) : (
+            <>
+              <div className="mb-8"> {/* Added margin bottom for spacing */}
+                <p className="text-lg text-gray-400">
+                  Connect with friends and family.
+                </p> {/* Example text */}
+              </div>
+              <div className="flex justify-center">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  className="px-6 py-3 text-lg font-semibold text-white bg-[#FE3EAA] rounded-2xl shadow-lg hover:bg-[#6C19FF] transition-all duration-300"
+                  onClick={() => setShowSignUpForm(true)} // Show form on button click
+                >
+                  Sign Up
+                </motion.button>
+              </div>
+            </>
+          )}
         </motion.div>
       )}
     </AnimatePresence>
