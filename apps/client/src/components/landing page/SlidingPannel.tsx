@@ -1,23 +1,29 @@
-
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 
-import SignUpForm from "./SignupComponent"; // Import the SignUpForm component
-
+import SignUpForm from "./SignupComponent";
+import SignInForm from "./SigninComponent";
+import TextCarousel from "./TextCarousel";
 interface SlidingPanelProps {
   onClose: () => void;
+  showSignIn?: boolean;
+  setShowSignIn: (value: boolean) => void;
 }
-
-export default function SlidingPanel({ onClose }: SlidingPanelProps) {
+export default function SlidingPanel({
+  onClose,
+  showSignIn = false,
+  setShowSignIn,
+}: SlidingPanelProps) {
   const [isVisible, setIsVisible] = useState(true);
-  const [showSignUpForm, setShowSignUpForm] = useState(false); // State to toggle form visibility
+  const [showSignUpForm, setShowSignUpForm] = useState(false);
 
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(() => onClose(), 300);
+    setShowSignIn(false);
   };
 
   return (
@@ -39,22 +45,21 @@ export default function SlidingPanel({ onClose }: SlidingPanelProps) {
             <IoClose />
           </button>
 
-          <h1 className="text-4xl font-bold mb-4">Welcome to Pigeon</h1>
-
-          {showSignUpForm ? ( // Conditionally render the form or other content
+          {showSignUpForm ? (
             <SignUpForm />
+          ) : showSignIn ? (
+            <SignInForm />
           ) : (
             <>
-              <div className="mb-8"> {/* Added margin bottom for spacing */}
-                <p className="text-lg text-gray-400">
-                  Connect with friends and family.
-                </p> {/* Example text */}
+              <h1 className="text-4xl font-bold mb-4">Welcome to Pigeon</h1>
+              <div className="mb-8">
+                <TextCarousel />
               </div>
-              <div className="flex justify-center">
+              <div className="flex justify-center space-x-4">
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   className="px-6 py-3 text-lg font-semibold text-white bg-[#FE3EAA] rounded-2xl shadow-lg hover:bg-[#6C19FF] transition-all duration-300"
-                  onClick={() => setShowSignUpForm(true)} // Show form on button click
+                  onClick={() => setShowSignUpForm(true)}
                 >
                   Sign Up
                 </motion.button>

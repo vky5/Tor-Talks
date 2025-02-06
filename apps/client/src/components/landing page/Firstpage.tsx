@@ -9,6 +9,7 @@ import SlidingPanel from "./SlidingPannel";
 
 function Firstpage() {
   const [showPanel, setShowPanel] = useState(false);
+  const [showSignInForm, setShowSignInForm] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-[#0D0C13] overflow-hidden">
@@ -59,13 +60,23 @@ function Firstpage() {
         <motion.button
           whileHover={{ scale: 1.1 }}
           className="px-6 py-3 text-lg font-semibold text-white bg-[#FE3EAA] rounded-2xl shadow-lg hover:bg-[#6C19FF] transition-all duration-300"
+          onClick={() => {
+            setShowPanel(true);
+            setShowSignInForm(true);
+          }}
         >
           Login
         </motion.button>
       </div>
 
       {/* Sliding Panel */}
-      {showPanel && <SlidingPanel onClose={() => setShowPanel(false)} />}
+      {showPanel && (
+        <SlidingPanel
+          onClose={() => setShowPanel(false)}
+          showSignIn={showSignInForm}
+          setShowSignIn={setShowSignInForm}
+        />
+      )}
 
       {/* Small Animated Blue Circle at Bottom */}
       <motion.div

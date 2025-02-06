@@ -1,20 +1,16 @@
-// SignUpForm.tsx
+
 
 "use client";
 
 import { useState } from "react";
 
-interface FormData {
-  name: string;
-  username: string;
+interface SignInData {
   email: string;
   password: string;
 }
 
-const SignUpForm = () => {
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    username: "",
+const SignInForm = () => {
+  const [signInData, setSignInData] = useState<SignInData>({
     email: "",
     password: "",
   });
@@ -23,8 +19,8 @@ const SignUpForm = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setSignInData({
+      ...signInData,
       [name]: value,
     });
   };
@@ -33,39 +29,19 @@ const SignUpForm = () => {
     e.preventDefault();
     setIsSubmitted(true);
     // Handle form submission (e.g., send data to the backend)
-    console.log(formData);
+    console.log(signInData);
   };
 
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-4">
-      <h2 className="text-3xl font-bold text-center text-white">Sign Up</h2>
-      
-      <div>
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
-          onChange={handleInputChange}
-          className="w-full p-3 rounded-xl bg-[#1F1F2E] text-white border border-[#333] focus:outline-none"
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleInputChange}
-          className="w-full p-3 rounded-xl bg-[#1F1F2E] text-white border border-[#333] focus:outline-none"
-        />
-      </div>
+      <h2 className="text-3xl font-bold text-center text-white">Sign In</h2>
+
       <div>
         <input
           type="email"
           name="email"
           placeholder="Email"
-          value={formData.email}
+          value={signInData.email}
           onChange={handleInputChange}
           className="w-full p-3 rounded-xl bg-[#1F1F2E] text-white border border-[#333] focus:outline-none"
         />
@@ -75,7 +51,7 @@ const SignUpForm = () => {
           type="password"
           name="password"
           placeholder="Password"
-          value={formData.password}
+          value={signInData.password}
           onChange={handleInputChange}
           className="w-full p-3 rounded-xl bg-[#1F1F2E] text-white border border-[#333] focus:outline-none"
         />
@@ -85,11 +61,11 @@ const SignUpForm = () => {
           type="submit"
           className="px-6 py-3 text-lg font-semibold text-white bg-[#FE3EAA] rounded-2xl shadow-lg hover:bg-[#6C19FF] transition-all duration-300"
         >
-          {isSubmitted ? "Submit" : "Sign up"}
+          {isSubmitted ? "Submitting..." : "Sign in"}
         </button>
       </div>
     </form>
   );
 };
 
-export default SignUpForm;
+export default SignInForm;
