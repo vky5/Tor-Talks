@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Chat {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  chatName        String?
+  isGroupChat     Boolean   @default(false)
+  users           String[]  @db.ObjectId // Array of User IDs (from Next.js Service)
+  messages        Message[]
+  latestMessageId String?   @db.ObjectId // Stores latest message ID
+  groupAdminId    String?   @db.ObjectId // Admin's User ID
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  senderId  String   @db.ObjectId // User ID (from Next.js Service)
+  content   String
+  chatId    String   @db.ObjectId
+  readBy    String[] @db.ObjectId // Array of User IDs who have read the message
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Chat      Chat     @relation(fields: [chatId], references: [id])
+}

@@ -1,7 +1,9 @@
+const dotenv = require('dotenv');
 const app = require("./main.js")
 
-const PORT = process.env.PORT || 3000;
+dotenv.config({path: './.env'})
 
-const server = app.listen(PORT, ()=>{
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, ()=>{
 	console.log(`Chat service is working properly at port: ${PORT}`)
 });
